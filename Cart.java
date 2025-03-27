@@ -47,8 +47,11 @@ public class Cart{
         public void addItem(Integer itemId, Integer quantity){
             this._items.put(itemId, quantity);
         }
-        public void removeItem(){
-            // TODO
+        /*@
+        @ requires itemId != null;
+        @*/
+        public void removeItem(Integer itemId){
+            this._items.remove(itemId);
         }
 
     }
