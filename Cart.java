@@ -1,22 +1,37 @@
 import java.util.HashMap;
 
-public class Cart {
-    static class Item {
+
+public class Cart{
+    static class Item{
+        //@ spec_public
         private Integer itemId;
+        //@ spec_public
         private Integer quantity;
         private Double price;
 
+        //@ public invariant itemId >=0;
+        //@ public invariant quantity >=0;
+        //@ public invariant price >= 0;
+
+        //@ requires itemId != null;
+        //@ requires itemId >= 0;
+        //@ requires quantity != null;
+        //@ requires quantity >= 0;
+        //@ requires price != null;
+        //@ requires price >= 0;
         public Item(Integer itemId, Integer quantity, Double price) {
             this.itemId = itemId;
             this.quantity = quantity;
             this.price = price;
         }
 
-        public Integer getQuantity() {
+        //@ ensures \result == this.quantity;
+        public Integer getQuantity(){
             return this.quantity;
         }
 
-        public Integer getItemId() {
+        //@ ensures \result == this.itemId;
+        public Integer getItemId(){
             return this.itemId;
         }
 
