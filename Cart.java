@@ -2,7 +2,7 @@ import java.util.HashMap;
 
 
 public class Cart{
-    static class Item{
+    class Item{
         //@ spec_public
         private Integer itemId;
         //@ spec_public
@@ -49,18 +49,20 @@ public class Cart{
         }
     }
 
-    static class ShoppingCart {
+    class ShoppingCart {
         //@ spec_public
         private Integer userId;
         //@ spec_public
-        private HashMap<Integer, Item> items;
+        private HashMap<Integer, HashMap<Integer, Double>> items;
+
+        //@ public invariant userId != null;
 
         //@ requires userId != null;
         //@ ensures this.userId == userId;
         //@ ensures this.items != null;
         public ShoppingCart(Integer userId) {
             this.userId = userId;
-            this.items = new HashMap<Integer, Item>();
+            this.items = new HashMap<Integer, HashMap<Integer, Double>>();
         }
 
         //@ requires itemId != null;
@@ -70,21 +72,11 @@ public class Cart{
         //@ requires price != null;
         //@ requires price >= 0;
         public void addItem(Integer itemId, Integer quantity, Double price) {
-            if (items.containsKey(itemId)) {
-                Item existingItem = items.get(itemId);
-                existingItem.setQuantity(existingItem.getQuantity() + quantity);
-            } else {
-                Item newItem = new Item(itemId, quantity, price);
-                items.put(itemId, newItem);
-            }
-        }
-
-        //@ requires itemId != null;
-        //@ requires itemId >= 0;
-        //@ requires new_quantity != null;
-        //@ requires new_quantity >= 0;
-        public void updateQuantity(Integer itemId, Integer new_quantity) {
-            this.items.get(itemId).setQuantity(new_quantity);
+            // TODO: check whether the item already exists in the cart
+            HashMap<Integer, Double> hm = new HashMap<Integer, Double>();
+            hm.put(quantity, price);
+            // Item item = new Item(itemId, quantity, price);
+            this.items.put(itemId, hm);
         }
 
         //@ requires itemId != null;
@@ -93,15 +85,16 @@ public class Cart{
             this.items.remove(itemId);
         }
 
-        // @ ensures \result >= 0.0;
-        public Double getTotal() {
-            double total = 0.0;
-            // TODO: add loop invariant
-            for (Item item : items.values()) {
-                total += item.getPrice() * item.getQuantity();
-            }
-            return total;
-        }
+        // TODO: Fix the error we get from openjml here
+        // // @ ensures \result >= 0.0;
+        // public Double getTotal() {
+        //     double total = 0.0;
+        //     // TODO: add loop invariant
+        //     for (Item item : items.values()) {
+        //         total += item.getPrice() * item.getQuantity();
+        //     }
+        //     return total;
+        // }
     }
 
     // public static void main(String[] args) {
